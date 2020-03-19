@@ -23,15 +23,15 @@ var apiKey *string
 
 // struct to convert json response from news api
 type Results struct {
-	Status       string     `json:"status"`
-	TotalResults int        `json:"totalResults"`
-	Articles     []Articles `json:"articles"`
+	Status       string    `json:"status"`
+	TotalResults int       `json:"totalResults"`
+	Articles     []Article `json:"articles"`
 }
 type Source struct {
 	ID   interface{} `json:"id"`
 	Name string      `json:"name"`
 }
-type Articles struct {
+type Article struct {
 	Source      Source    `json:"source"`
 	Author      string    `json:"author"`
 	Title       string    `json:"title"`
@@ -48,6 +48,12 @@ type Search struct {
 	NextPage   int
 	TotalPages int
 	Results    Results
+}
+
+// formats the date of article to be more readable
+func (a *Article) FormatPublishedDate() string {
+	year, month, day := a.PublishedAt.Date()
+	return fmt.Sprintf("%v %d %d", month, day, year)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
